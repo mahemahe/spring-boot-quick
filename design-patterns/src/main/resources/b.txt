@@ -1,0 +1,3 @@
+#include c.txt
+
+I'm b.txt content.

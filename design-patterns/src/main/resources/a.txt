@@ -1,0 +1,2 @@
+#include b.txt
+I'm a.txt content.

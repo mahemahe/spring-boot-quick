@@ -1,10 +1,11 @@
-package quick.algorithm.chapter_one;
+package quick.algorithm.one;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 1.2 编写一个程序求解字谜问题
  * 注意：在char[]数组转为string时，会按照char数组长度完全转换为string，就算后面或部分数组成员为空。
  *      这时需要将数组中的空对象刨除，余下的char组成string
  * @author mahe <mahe@maihaoche.com>
@@ -13,14 +14,18 @@ import java.util.List;
 public class ChapterOneQuestionTwo {
     public static void main(String[] args) {
         try {
+            // 传入要匹配的字典
             TestTwo two = new TestTwo(new String[]{"sport", "all", "game", "hah", "word", "hello", "as", "to", "go", "high"});
+            // 设定二维数组边长
             char[][] chars= two.createCharsBySideLength(2000);
-            // 打印待匹配字符
+            // 打印待匹配字符数组
             System.out.println(AlgorithmUtils.convertArrayArrayToString(chars));
             long start = System.currentTimeMillis();
+            // 输出匹配字典的字符组合
             List<String> matchedWords = two.matchWords(chars);
             long end = System.currentTimeMillis();
             System.out.println("计时：" + new BigDecimal(end - start).divide(new BigDecimal(1000)).toPlainString());
+            // 打印匹配字段的字符组合
             System.out.println("匹配的words：");
             matchedWords.stream().distinct().forEach(temp -> System.out.println(temp));
         } catch (Exception e) {

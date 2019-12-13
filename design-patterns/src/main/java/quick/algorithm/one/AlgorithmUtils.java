@@ -1,4 +1,4 @@
-package quick.algorithm.chapter_one;
+package quick.algorithm.one;
 
 import java.util.Random;
 

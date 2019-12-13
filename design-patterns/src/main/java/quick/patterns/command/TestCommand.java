@@ -10,19 +10,33 @@ import quick.patterns.command.entity.Light;
 public class TestCommand {
 
     public static void main(String[] args) {
+        // 简单遥控器
         SimpleRemoteControl control = new SimpleRemoteControl();
         Light light = new Light();
-        LightOnCommand command = new LightOnCommand(light);
-        control.setCommand(command);
+        LightOnCommand lightOnCommand = new LightOnCommand(light);
+        control.setCommand(lightOnCommand);
+        control.buttonWasPressed();
+        LightOffCommand lightOffCommand = new LightOffCommand(light);
+        control.setCommand(lightOffCommand);
         control.buttonWasPressed();
 
         Light doorLight = new Light();
-        SimpleRemoteControl control1 = new SimpleRemoteControl();
         GarageDoor garageDoor = new GarageDoor();
         garageDoor.setLight(doorLight);
         GarageDoorOpenCommand doorOpenCommand = new GarageDoorOpenCommand();
         doorOpenCommand.setGarageDoor(garageDoor);
-        control1.setCommand(doorOpenCommand);
-        control1.buttonWasPressed();
+        GarageDoorCloseCommand doorCloseCommand = new GarageDoorCloseCommand();
+        doorCloseCommand.setGarageDoor(garageDoor);
+
+        // 7个插线孔的遥控器
+        RemoteControl remoteControl = new RemoteControl();
+        remoteControl.setCommand(2, lightOnCommand, lightOffCommand);
+        remoteControl.setCommand(3, doorOpenCommand, doorCloseCommand);
+        System.out.println(remoteControl.toString());
+
+        remoteControl.onButtonWasPressed(2);
+        remoteControl.onButtonWasPressed(5);
+        remoteControl.offButtonWasPressed(3);
+        remoteControl.undoButtonWasPressed();
     }
 }

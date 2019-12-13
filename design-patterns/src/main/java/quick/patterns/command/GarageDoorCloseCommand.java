@@ -6,7 +6,7 @@ import quick.patterns.command.entity.GarageDoor;
  * @author mahe <mahe@maihaoche.com>
  * @date 2019-11-12
  */
-public class GarageDoorOpenCommand implements Command {
+public class GarageDoorCloseCommand implements Command {
     private GarageDoor garageDoor;
 
     public void setGarageDoor(GarageDoor garageDoor) {
@@ -18,7 +18,7 @@ public class GarageDoorOpenCommand implements Command {
      */
     @Override
     public void execute() {
-        garageDoor.up();
+        garageDoor.down();
     }
 
     /**
@@ -26,6 +26,6 @@ public class GarageDoorOpenCommand implements Command {
      */
     @Override
     public void undo() {
-        garageDoor.down();
+        garageDoor.up();
     }
 }
