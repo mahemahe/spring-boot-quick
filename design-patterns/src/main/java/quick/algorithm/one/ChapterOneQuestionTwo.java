@@ -3,6 +3,7 @@ package quick.algorithm.one;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import quick.algorithm.AlgorithmUtils;
 
 /**
  * 1.2 编写一个程序求解字谜问题

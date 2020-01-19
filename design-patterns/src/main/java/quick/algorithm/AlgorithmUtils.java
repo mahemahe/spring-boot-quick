@@ -1,4 +1,4 @@
-package quick.algorithm.one;
+package quick.algorithm;
 
 import java.util.Random;
 
@@ -48,5 +48,32 @@ public class AlgorithmUtils {
         }
 
         return sb.toString();
+    }
+
+    /**
+     * 交换list中两个index的值
+     * @param list
+     * @param indexOne
+     * @param indexTwo
+     */
+    public static void exchange(int[] list, int indexOne, int indexTwo) {
+        list[indexOne] = list[indexOne] ^ list[indexTwo];
+        list[indexTwo] = list[indexOne] ^ list[indexTwo];
+        list[indexOne] = list[indexOne] ^ list[indexTwo];
+    }
+
+    /**
+     * 交换list中两个index的值
+     * @param list
+     * @param indexOne
+     * @param indexTwo
+     */
+    public static void exchange(int[][] list, int indexOne, int indexTwo) {
+        list[indexOne][0] = list[indexOne][0] ^ list[indexTwo][0];
+        list[indexTwo][0] = list[indexOne][0] ^ list[indexTwo][0];
+        list[indexOne][0] = list[indexOne][0] ^ list[indexTwo][0];
+        list[indexOne][1] = list[indexOne][1] ^ list[indexTwo][1];
+        list[indexTwo][1] = list[indexOne][1] ^ list[indexTwo][1];
+        list[indexOne][1] = list[indexOne][1] ^ list[indexTwo][1];
     }
 }

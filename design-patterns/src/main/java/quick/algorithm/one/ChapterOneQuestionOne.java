@@ -3,6 +3,7 @@ package quick.algorithm.one;
 import java.math.BigDecimal;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import quick.algorithm.AlgorithmUtils;
 
 /**
  * 1.1编写一个程序解决选择问题。令k=N/2。画出表格显示你的程序对于N为不同值的运行时间。
@@ -15,7 +16,7 @@ public class ChapterOneQuestionOne {
         long start = System.currentTimeMillis();
         TestOne one = new TestOne();
         try {
-            one.test1_1(40000);
+            one.test1_1(256000);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
