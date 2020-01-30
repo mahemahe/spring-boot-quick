@@ -115,13 +115,4 @@ class TestTwoQuestionEight {
         long endTime = System.nanoTime();
         return endTime - startTime;
     }
-
-    /**
-     * 获取随机数
-     * @param range 范围
-     * @return
-     */
-    private int getRandomInt(int range) {
-        return random.nextInt(range);
-    }
 }

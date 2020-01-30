@@ -1,7 +1,7 @@
 package quick.algorithm.two;
 
 /**
- * 第24题，用N表示乘法的运算次数，应该是小于等于 2LogN
+ * 第24题，用N表示乘法的运算次数，应该是小于 2LogN
  * @author mahe <mahe@maihaoche.com>
  * @date 2020-01-19
  */
@@ -35,7 +35,6 @@ public class ChapterTwoQuestionTwentyThree {
             if (1 == power % 2) {
                 multiplier *= x;
                 count++;
-
             }
             x *= x;
             count++;

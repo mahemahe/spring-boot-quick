@@ -1,14 +1,31 @@
 package quick.algorithm;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * @author mahe <mahe@maihaoche.com>
  * @date 2019-11-12
  */
 public class AlgorithmUtils {
-    private static final Random RANDOM = new Random();
+    private static final ThreadLocalRandom RANDOM = ThreadLocalRandom.current();
 
+    /**
+     * 从a[0]到a[n-1]的数组a
+     * 元素可重复
+     * @param range 范围
+     * @return
+     */
+    public static Integer[] randomArray(int range) {
+        Integer[] a = new Integer[range];
+        int i = 0;
+        while_mark:
+        while (i < range) {
+            a[i] = RANDOM.nextInt(range);
+            i++;
+        }
+        return a;
+    }
     /**
      * 根据bound，获取随机数
      * @param bound
