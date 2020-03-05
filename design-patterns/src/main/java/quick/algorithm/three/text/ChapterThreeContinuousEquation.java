@@ -1,4 +1,4 @@
-package quick.algorithm.three;
+package quick.algorithm.three.text;
 
 /**
  * 连等式

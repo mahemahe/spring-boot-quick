@@ -1,4 +1,4 @@
-package quick.algorithm.three;
+package quick.algorithm.three.text;
 
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
@@ -17,6 +17,92 @@ class MyLinkedList<T> implements Iterable<T> {
     private int modCount = 0;
     private Node<T> beginMarker;
     private Node<T> endMarker;
+
+    /**
+     * Homework 3.10 实现removeAll
+     * 逻辑是，外层循环用items，获取每个data元素，对每个data元素，都对当前list进行一次循环比对
+     * 所以运行时间估算是 O(N的平方) ，这个结果的前提是认为items的size N 与 当前list的size M 相近
+     * 如果有两个size 相差较大，那 O ( M * N )
+     *
+     * LinkedList中的removeAll方法，是使用java.util.AbstractCollection#removeAll(java.util.Collection)，
+     * 在次方法中，第二层循环是入参的items，外层循环是当前list，
+     * @see java.util.LinkedList
+     * @param items
+     */
+    public void removeAll(Iterable<? extends T> items) {
+        Iterator<? extends T> itemsItr = items.iterator();
+        Iterator<T> currentItr;
+        while (itemsItr.hasNext()) {
+            T expectedData = itemsItr.next();
+            currentItr = this.iterator();
+            while (currentItr.hasNext()) {
+                if (currentItr.next().equals(expectedData)) {
+                    currentItr.remove();
+                    // 我的代码错误：这里不能break，如果认为数组中的元素非重才可以这样处理
+//                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     * Homework 3.3 实现MyLinkedList的contains例程
+     * @param data
+     * @param <T>
+     * @return
+     */
+    public <T> boolean contains(T data) {
+        Node<T> node = (Node<T>)beginMarker;
+        while (endMarker != (node = node.next)) {
+            if (data == node.data) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Homework 3.2
+     * 通过只调整链（而不是数据）来交换两个相邻的元素，单向链表
+     *
+     * @param before 只能交换当前节点后面的两个节点
+     * @param <T>
+     */
+    public <T> void swapSingleLinkedList(Node<T> before) {
+        if (null == before.next || null == before.next.next) {
+            return;
+        }
+        // 需要一个暂存变量
+        Node current = before.next;
+
+        // 进行交换
+        before.next = current.next;
+        current.next = before.next.next;
+        before.next.next = current;
+
+    }
+
+    /**
+     * Homework 3.2
+     * 通过只调整链（而不是数据）来交换两个相邻的元素，双向链表
+     * 与单向链表的区别
+     *      1.是肯定有before和after节点，因为有 头节点 和 尾节点
+     *      2.每个节点都有prev 和 next
+     *      3.单向链表只能交换当前节点后面的两个节点，而双向链表可以交换当前节点与后面一个节点
+     *
+     * @param current
+     * @param <T>
+     */
+    public <T> void swapDoubleLinkedList(Node<T> current) {
+        if (endMarker == current.next) {
+            return;
+        }
+        current.next.prev = current.prev;
+        current.prev = current.next;
+        current.next = current.next.next;
+        current.prev.next = current;
+    }
 
     private static class Node<T> {
         public T data;

@@ -1,4 +1,5 @@
 package quick.algorithm;
+import	java.util.LinkedList;
 
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -92,5 +93,18 @@ public class AlgorithmUtils {
         list[indexOne][1] = list[indexOne][1] ^ list[indexTwo][1];
         list[indexTwo][1] = list[indexOne][1] ^ list[indexTwo][1];
         list[indexOne][1] = list[indexOne][1] ^ list[indexTwo][1];
+    }
+
+    /**
+     * 生成一个长度为n的LinkedList，且list[idx] = idx + 1
+     * @param n
+     * @return
+     */
+    public static LinkedList<Integer> generateLinkedList(int n) {
+        LinkedList<Integer> result = new LinkedList<>();
+        for (int i = 1; i < n + 1; i++) {
+            result.add(i);
+        }
+        return result;
     }
 }

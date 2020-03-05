@@ -1,10 +1,13 @@
-package quick.algorithm.three;
+package quick.algorithm.three.text;
 
 import java.lang.reflect.Array;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Spliterator;
 import java.util.function.Consumer;
+import quick.algorithm.three.homework.ChapterThreeQuestionNineAndTen;
 
 /**
  * 第三章 集合--ArrayList的实现逻辑
@@ -44,6 +47,7 @@ public class ChapterThreeArrayList {
  * @param <T>
  */
 class MyArrayList<T> implements Iterable<T> {
+    private int modCount = 0;
 
     private static final int DEFAULT_CAPACITY = 10;
     private int theSize;
@@ -54,7 +58,34 @@ class MyArrayList<T> implements Iterable<T> {
     private void doClear() {
         theSize = 0;
         ensureCapacity(DEFAULT_CAPACITY);
+        modCount++;
     }
+
+    /**
+     * 课后习题 3.9的解
+     * 我的答案
+     * 运行时间：items的size如果为N，原数组size为M，那么 O( Max(N, M) )，因为过程中可能会发生一次数组扩容产生的原数组拷贝
+     * @see ChapterThreeQuestionNineAndTen
+     */
+    public void addAll(Iterable<? extends T> items) {
+        // 先要确保当前数组的容量足够放入新的list
+        // 先获取items的size
+        int newItemsSize = 0;
+        Iterator<? extends T> iterator = items.iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+            newItemsSize++;
+        }
+
+        // 这样只会发生一次拷贝
+        ensureCapacity(size() + newItemsSize);
+        iterator = items.iterator();
+        while (iterator.hasNext()) {
+            add(iterator.next());
+        }
+        modCount++;
+    }
+
 
     public void ensureCapacity(int newCapacity) {
         if (newCapacity < theSize) {
@@ -77,8 +108,8 @@ class MyArrayList<T> implements Iterable<T> {
         }
         T old = items[idx];
         items[idx] = newVal;
+        modCount++;
         return old;
-
     }
 
     public boolean add(T x) {
@@ -95,6 +126,129 @@ class MyArrayList<T> implements Iterable<T> {
         }
         items[idx] = x;
         theSize++;
+        modCount++;
+    }
+
+    public void remove(int idx) {
+        if (idx >= size()) {
+            throw new NoSuchElementException();
+        }
+        for (int i = theSize - 1; i > idx; i--) {
+            items[i - 1] = items[i];
+        }
+        theSize--;
+        modCount++;
+    }
+
+    /**
+     * Homework 3.13 对MyArrayList添加ListIterator的实现支持
+     * @return
+     */
+    public ListIterator<T> listIterator() {
+        return new NewArrayListIterator();
+    }
+
+    /**
+     * Homework 3.13
+     * @see quick.algorithm.three.homework.ChapterThreeQuestionThirteen
+     */
+    private class NewArrayListIterator implements ListIterator<T> {
+        /**
+         * 光标，表示当前位置
+         */
+        private int cursor;
+        private int expectedModCount = modCount;
+        private boolean illegalState = true;
+
+        public NewArrayListIterator() {
+            cursor = 0;
+            illegalState = true;
+        }
+
+        private void checkForModCount() {
+            if (expectedModCount != modCount) {
+                throw new NoSuchElementException();
+            }
+        }
+
+        /**
+         * @return {@code true} if the list iterator has more elements when traversing the list in the forward direction
+         */
+        @Override
+        public boolean hasNext() {
+            return cursor < size();
+        }
+
+        /**
+         * Returns the next element in the list and advances the cursor position. This method may be called repeatedly
+         * to iterate through the list, or intermixed with calls to {@link #previous} to go back and forth. (Note that
+         * alternating calls to {@code next} and {@code previous} will return the same element repeatedly.)
+         *
+         * @return the next element in the list
+         * @throws NoSuchElementException if the iteration has no next element
+         */
+        @Override
+        public T next() {
+            checkForModCount();
+            if (cursor >= size()) {
+                throw new NoSuchElementException();
+            }
+
+            illegalState = false;
+            return items[cursor++];
+        }
+
+        @Override
+        public void set(T t) {
+            expectedModCount++;
+            MyArrayList.this.set(cursor, t);
+        }
+
+        /**
+         * @throws IllegalStateException         if neither {@code next} nor {@code previous} have been called, or
+         *                                       {@code remove} or {@code add} have been called after the last call to
+         *                                       {@code next} or {@code previous}
+         */
+        @Override
+        public void remove() {
+            if (illegalState) {
+                // 这个是根据继承的接口描述中的要求写的这个illegalState逻辑
+                throw new IllegalStateException();
+            }
+            MyArrayList.this.remove(cursor);
+            illegalState = true;
+        }
+
+        /**
+         *
+         * @param t the element to insert
+         * @throws UnsupportedOperationException if the {@code add} method is not supported by this list iterator
+         * @throws ClassCastException            if the class of the specified element prevents it from being added to
+         *                                       this list
+         * @throws IllegalArgumentException      if some aspect of this element prevents it from being added to this
+         *                                       list
+         */
+        @Override
+        public void add(T t) {
+
+        }
+
+        @Override
+        public boolean hasPrevious() {
+            throw new UnsupportedOperationException();
+        }
+        @Override
+        public T previous() {
+            throw new UnsupportedOperationException();
+        }
+        @Override
+        public int nextIndex() {
+            throw new UnsupportedOperationException();
+        }
+        @Override
+        public int previousIndex() {
+            throw new UnsupportedOperationException();
+        }
     }
 
     private class ArrayListIterator implements Iterator<T> {
