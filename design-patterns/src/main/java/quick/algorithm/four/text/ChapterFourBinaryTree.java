@@ -48,6 +48,8 @@ class BinarySearchTree<T> {
         }
     }
     /**
+     * recursive method
+     * the program run time is O(N)
      * infix print the current tree's nodes
      * print the nodes's data of the current tree
      */

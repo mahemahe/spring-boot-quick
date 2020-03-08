@@ -5,6 +5,8 @@ import java.util.Comparator;
 /**
  * 4.4 AVL树 带有平衡条件的二叉查找树
  * 平衡条件：每个节点的左右子树高度最多相差1
+ *
+ * 4.6 再探树的遍历
  * @author mahe <mahe@maihaoche.com>
  * @date 2020/3/5
  */
@@ -21,13 +23,25 @@ class AvlTree<T > {
     private AvlNode<T> root;
     private Comparator<? super T> comparator;
 
+    /**
+     * textbook 4.6 postfix
+     * recursive method
+     * internal method to compute height of a subtree
+     */
+    private int heightPostfix(AvlNode<T> current) {
+        if (null == current) {
+            return -1;
+        }
+
+        return 1 + Math.max(heightPostfix(current.left), heightPostfix(current.right));
+    }
+
     public void remove(T data) {
         if (null == data) {
             return;
         }
         root = remove(data, root);
     }
-
     /**
      * this method is likely to "quick.algorithm.four.text.BinarySearchTree#remove(java.lang.Object, quick.algorithm.four.text.BinarySearchTree.BinaryNode)"
      * replace only the one line of codes at the end of the method
