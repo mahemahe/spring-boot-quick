@@ -1,6 +1,8 @@
 package quick.algorithm.four.text;
 
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 4.3 二叉树：查找书ADT--二叉查找树
@@ -13,6 +15,9 @@ import java.util.Comparator;
  */
 public class ChapterFourBinaryTree {
     public static void main(String[] args) {
+        Map<String, String> map = new HashMap<>();
+        map.put("a", "apple");
+        map.put("b", "both");
         int c = 1 != 0 ? 2 : 10;
         System.out.println(c);
     }

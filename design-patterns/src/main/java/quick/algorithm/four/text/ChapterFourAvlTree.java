@@ -139,6 +139,24 @@ class AvlTree<T > {
         current.right = rotationWithLeftChild(current.right);
         return rotationWithRightChild(current);
     }
+
+    /**
+     * Homework 4.26 answer
+     * double rotation method (simple type)
+     * do not use rotation twice, double rotation one time
+     */
+    private AvlNode<T> doubleWithLeftChildSimple(AvlNode<T> current) {
+        AvlNode<T> newCurrent = current.left.right;
+        current.left.right = newCurrent.left;
+        newCurrent.left = current.left;
+        current.left = newCurrent.right;
+        newCurrent.right = current;
+        newCurrent.left.height = Math.max(height(newCurrent.left.left), height(newCurrent.left.right)) + 1;
+        current.height = Math.max(height(current.left), height(current.right)) + 1;
+        newCurrent.height = Math.max(height(newCurrent.left), height(newCurrent.right)) + 1;
+        return newCurrent;
+    }
+
     /**
      * double rotation method
      * execute the rotation method twice: first rotation k1 and k2; second rotation k2 and k3
@@ -164,7 +182,6 @@ class AvlTree<T > {
 //        newCurrent.right = current;
 //        return newCurrent;
 //    }
-
 
     /**
      * a mirror method of the method "rotationWithLeftChild()" below
