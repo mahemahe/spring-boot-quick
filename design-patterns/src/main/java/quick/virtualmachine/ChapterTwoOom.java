@@ -1,32 +1,83 @@
 package quick.virtualmachine;
+import java.lang.management.ClassLoadingMXBean;
+import java.lang.management.ManagementFactory;
+import java.lang.reflect.Field;
 import	java.util.ArrayList;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import sun.misc.Unsafe;
 
 /**
  * @author mahe <mahe@maihaoche.com>
  * @date 2020/4/24
  */
 public class ChapterTwoOom {
-
-    public static void main(String[] args) {
-        String a2 = "a";
-        String a3 = "a";
-        System.out.println("a3 = a2 ? " + (a3 == a2));
-
-        long l1 = 1;
-        long l2 = 1;
-        Long l3 = new Long(1);
-        Long l4 = Long.valueOf(1);
-        Long l5 = Long.valueOf("1");
-        Long l6 = 1L;
-
-        System.out.println("l1 = l2 ? " + (l1 == l2));
-        System.out.println("l3 = l2 ? " + (l3 == l2));
-        System.out.println("l3 = l4 ? " + (l3 == l4));
-        System.out.println("l5 = l4 ? " + (l5 == l4));
-        System.out.println("l5 = l6 ? " + (l5 == l6));
+    private static final long _1G = 1024L * 1024L * 1024L;
+    /**
+     * test Direct Memory, cause OOM
+     */
+    public static void main(String[] args) throws IllegalAccessException {
+        Field unsafeField = Unsafe.class.getDeclaredFields()[0];
+        unsafeField.setAccessible(true);
+        Unsafe unsafe = (Unsafe) unsafeField.get(null);
+        while (true) {
+            unsafe.allocateMemory(_1G);
+        }
     }
+
+//    /**
+//     * 测试String.intern方法，就是测试字符串常量池的逻辑
+//     */
+//    public static void main(String[] args) {
+//        String a1 = "计算机" + "11";
+//        String a2 = new String("计算机");
+//        String a3 = "机器人";
+//        String a4 = new String("机器人");
+//        Long a = new Long(1);
+//
+//        System.out.println(a2 == a2.intern());
+//        System.out.println(a3 == a4);
+//    }
+
+    /**
+     * 测试常量池溢出导致的heap溢出
+     */
+//    public static void main(String[] args) {
+//        ClassLoadingMXBean loadingMXBean = ManagementFactory.getClassLoadingMXBean();
+//        System.out.println("total: " + loadingMXBean.getTotalLoadedClassCount());
+//        System.out.println("active: " + loadingMXBean.getLoadedClassCount());
+//        System.out.println("unloaded: " + loadingMXBean.getUnloadedClassCount());
+//        // 用set保持引用，防止gc回收
+//        Set<String> set = new HashSet<>();
+//        int i = 0;
+//        while (true) {
+//            set.add(String.valueOf(i++).intern());
+//        }
+//    }
+
+    /**
+     * test Long.cache
+     */
+//    public static void main(String[] args) {
+//        String a2 = "a";
+//        String a3 = "a";
+//        System.out.println("a3 = a2 ? " + (a3 == a2));
+//
+//        long l1 = 1;
+//        long l2 = 1;
+//        Long l3 = new Long(1);
+//        Long l4 = Long.valueOf(1);
+//        Long l5 = Long.valueOf("1");
+//        Long l6 = 1L;
+//
+//        System.out.println("l1 = l2 ? " + (l1 == l2));
+//        System.out.println("l3 = l2 ? " + (l3 == l2));
+//        System.out.println("l3 = l4 ? " + (l3 == l4));
+//        System.out.println("l5 = l4 ? " + (l5 == l4));
+//        System.out.println("l5 = l6 ? " + (l5 == l6));
+//    }
 
     /**
      * -Xss256k
