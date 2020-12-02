@@ -9,9 +9,24 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.vdurmont</groupId>
+            <artifactId>emoji-java</artifactId>
+            <version>3.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.9.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.mhc.acura</groupId>
+            <artifactId>acura-dubbo</artifactId>
+            <version>1.9.22</version>
+        </dependency>
+        <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
-            <version>5.0.6</version>
+            <version>4.5.16</version>
         </dependency>
 
         <dependency>
@@ -36,6 +51,18 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-math3</artifactId>
             <version>3.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mhc.framework</groupId>
+            <artifactId>framework-core-base</artifactId>
+            <version>2.3.0.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tencentcloudapi</groupId>
+            <artifactId>tencentcloud-sdk-java</artifactId>
+            <version>3.1.97</version>
         </dependency>
     </dependencies>
 
