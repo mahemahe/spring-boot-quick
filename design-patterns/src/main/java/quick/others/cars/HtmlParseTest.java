@@ -49,6 +49,7 @@ public class HtmlParseTest {
     private static final String CLASS_LOCATION = "info-addr";
     private static final String CLASS_COMPANY = "company";
     private static final String HTTPS = "https:";
+    private static final String PREFIX_HTTPS = "^(https:).*$";
     private static final Element EMPTY_ELEMENT = new Element("span");
     private static final String TAB = "\t";
     private static final String PREFIX_GPS = "^[\\s\\S]*(dealerlist=\\[)";
@@ -216,7 +217,9 @@ public class HtmlParseTest {
         try {
             String licenceUrl = OkHttpUtils.get(String.format(LICENCE_URL, dealerId), MapUtils.EMPTY_MAP);
             if (StrUtil.isNotEmpty(licenceUrl)) {
-                info.setFinalUrl(HTTPS + licenceUrl);
+                licenceUrl = licenceUrl.replaceAll("\"", StrUtil.EMPTY);
+                licenceUrl = licenceUrl.matches(PREFIX_HTTPS) ? licenceUrl : HTTPS + licenceUrl;
+                info.setFinalUrl(licenceUrl);
             }
         } catch (Exception e) {
             e.printStackTrace();
