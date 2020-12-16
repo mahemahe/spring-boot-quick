@@ -27,7 +27,7 @@ public class ExecutorConstant {
      * 访问外网IO线程池
      */
     public static final Executor OUTER_NET_IO_EXECUTOR = new ThreadPoolExecutor(
-            10, 10,
+            6, 6,
             1, TimeUnit.MINUTES,
             new ArrayBlockingQueue<>(2048),
             new BasicThreadFactory.Builder().

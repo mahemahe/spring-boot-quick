@@ -206,17 +206,13 @@ public class HtmlParseTest {
         if (null == doc) {
             return info;
         }
-        Elements gpsEle = doc.getElementsByTag(TAG_SCRIPT);
+        Elements gpsEle = doc.getElementsByClass(CLASS_COMPANY);
         if (CollectionUtils.isNotEmpty(gpsEle)) {
-            gpsEle.forEach(script -> {
-                if (!Optional.ofNullable(script.data()).orElse(StrUtil.EMPTY).matches(SCRIPT_GPS)) {
-                    return;
-                }
-                String gpsJson = script.data().replaceFirst(PREFIX_GPS, StrUtil.EMPTY).replaceFirst(POST_GPS, StrUtil.EMPTY);
-                JSONObject gpsJSON = JSONUtil.parseObj(gpsJson);
-                info.setLongitude(gpsJSON.get(LONGITUDE).toString());
-                info.setLatitude(gpsJSON.get(LATITUDE).toString());
-            });
+            String gpsScript = gpsEle.get(1).data();
+            String gpsJson = gpsScript.replaceFirst(PREFIX_GPS, StrUtil.EMPTY).replaceFirst(POST_GPS, StrUtil.EMPTY);
+            JSONObject gpsJSON = JSONUtil.parseObj(gpsJson);
+            info.setLongitude(gpsJSON.get(LONGITUDE).toString());
+            info.setLatitude(gpsJSON.get(LATITUDE).toString());
         }
 
         // 通过get请求直接获取企业的营业执照
