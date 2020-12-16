@@ -36,6 +36,14 @@ public class NoParam {
      *
      */
     public static void main(String[] args) {
+        String decode = null;
+        try {
+            decode = AESUtil.fromBytesToHex(AESUtil.encryptAES("MitpiWyEBWdSSvAAxUqxmGiFYpqnVvRi"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.printf(decode);
+
         testVinOcr();
     }
 
