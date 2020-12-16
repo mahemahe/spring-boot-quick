@@ -253,8 +253,8 @@ public class HtmlParseTest {
             e.printStackTrace();
             return null;
         }
-        // 等待js后台执行30秒
-        webClient.waitForBackgroundJavaScript(3 * 1000);
+        // 等待js后台执行0.5秒
+        webClient.waitForBackgroundJavaScript(200);
         page.getWebResponse().defaultCharsetUtf8();
         String pageAsXml = page.asXml();
 
