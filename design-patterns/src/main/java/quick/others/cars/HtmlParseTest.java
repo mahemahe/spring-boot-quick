@@ -39,10 +39,8 @@ public class HtmlParseTest {
     // 第一个字符是城市拼音，第二个是页数
     private static final String URL = "https://dealer.autohome.com.cn/%s/0/0/0/0/%s/1/0/0.html";
     private static final String LICENCE_URL = "https://dealer.autohome.com.cn/Ajax/GetLicensePic?dealerId=%s";
-    private static final String LICENCE_ID = "layer3";
     private static final String TAG_A = "a";
     private static final String TAG_SPAN = "span";
-    private static final String TAG_SCRIPT = "script";
     private static final String TAG_EM = "em";
     private static final String ATTR_HREF = "href";
     private static final String ATTR_ID = "id";
@@ -55,7 +53,6 @@ public class HtmlParseTest {
     private static final String TAB = "\t";
     private static final String PREFIX_GPS = "^[\\s\\S]*(dealerlist=\\[)";
     private static final String POST_GPS = "\\];[\\s\\S]*$";
-    private static final String SCRIPT_GPS = PREFIX_GPS + "[\\s\\S]*" + POST_GPS;
     private static final String LONGITUDE = "MapLonBaidu";
     private static final String LATITUDE = "MapLatBaidu";
     /**
