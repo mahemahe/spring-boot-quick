@@ -1,7 +1,14 @@
 package quick.others.cars;
 
 
+import cn.hutool.core.util.RandomUtil;
+import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.WebRequest;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.gargoylesoftware.htmlunit.util.UrlUtils;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.cert.CertificateException;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -17,6 +24,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.util.CollectionUtils;
 
 /**
@@ -27,6 +36,39 @@ public class OkHttpUtils {
 
     private final static OkHttpClient CLIENT = getUnsafeOkHttpClient();
 
+    public static Document getDomByUrl(String url) {
+        // HtmlUnit 模拟浏览器
+        WebClient webClient = new WebClient(BrowserVersion.CHROME);
+        webClient.getOptions().setJavaScriptEnabled(true);              // 启用JS解释器，默认为true
+        webClient.getOptions().setCssEnabled(false);                    // 禁用css支持
+        webClient.getOptions().setThrowExceptionOnScriptError(false);   // js运行错误时，是否抛出异常
+        webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
+        webClient.getOptions().setTimeout(4 * 1000);                   // 设置连接超时时间
+        final WebRequest request;
+        try {
+            request = new WebRequest(UrlUtils.toUrlUnsafe(url),
+                    webClient.getBrowserVersion().getHtmlAcceptHeader(),
+                    webClient.getBrowserVersion().getAcceptEncodingHeader());
+            request.setCharset(StandardCharsets.UTF_8);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        HtmlPage page;
+        try {
+            page = webClient.getPage(webClient.getCurrentWindow().getTopWindow(), request);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        // 等待js后台执行0.5秒
+        int wait = RandomUtil.randomInt(5) + 1;
+        webClient.waitForBackgroundJavaScript(wait * 1000);
+        page.getWebResponse().defaultCharsetUtf8();
+        String pageAsXml = page.asXml();
+
+        return Jsoup.parse(pageAsXml);
+    }
 
     private static OkHttpClient getUnsafeOkHttpClient() {
         try {
@@ -70,7 +112,7 @@ public class OkHttpUtils {
                 }
             });
             builder.hostnameVerifier((hostname, session) -> true);
-            builder.connectTimeout(5, TimeUnit.SECONDS);
+            builder.connectTimeout(1, TimeUnit.SECONDS);
             OkHttpClient okHttpClient = builder.build();
             return okHttpClient;
         } catch (Exception e) {

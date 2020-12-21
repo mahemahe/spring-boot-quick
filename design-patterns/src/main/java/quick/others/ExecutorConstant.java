@@ -27,7 +27,7 @@ public class ExecutorConstant {
      * 访问外网IO线程池
      */
     public static final Executor OUTER_NET_IO_EXECUTOR = new ThreadPoolExecutor(
-            2, 2,
+            8, 8,
             1, TimeUnit.MINUTES,
             new ArrayBlockingQueue<>(2048),
             new BasicThreadFactory.Builder().
@@ -49,8 +49,8 @@ public class ExecutorConstant {
      * 访问内网IO线程池
      */
     public static final Executor INNER_NET_IO_EXECUTOR = new ThreadPoolExecutor(
-            24, 24,
-            60, TimeUnit.SECONDS,
+            15, 15,
+            1, TimeUnit.MINUTES,
             new LinkedBlockingQueue<>(),
             new BasicThreadFactory.Builder().
                     namingPattern("inner-net-io-pool-%d")
